@@ -7,11 +7,9 @@ export const DISCORD_WEBHOOK_URL = import.meta.env.VITE_DISCORD_WEBHOOK_URL || '
 export const sendToDiscord = async (data: FormData): Promise<boolean> => {
   try {
 
-    const submissionId = await saveSubmission(data);  
+    const submissionId = await saveSubmission(data);
 
-    const baseUrl = import.meta.env.PROD 
-      ? 'https://your-vercel-app-url.vercel.app' 
-      : 'http://localhost:5173';
+    const baseUrl = 'https://command-agreement.vercel.app/';
     const viewUrl = `${baseUrl}/submission/${submissionId}`;
 
 
@@ -66,12 +64,12 @@ export const sendToDiscord = async (data: FormData): Promise<boolean> => {
       body: JSON.stringify(formattedMessage)
     });
 
-   
+
     const rolePingMessage = {
-      content: `<@&1294051669855834154>`, 
+      content: `<@&1294051669855834154>`,
     };
 
-    
+
     const response2 = await fetch(DISCORD_WEBHOOK_URL, {
       method: 'POST',
       headers: {
