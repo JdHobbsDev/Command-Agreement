@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FormData } from '../../types';
 import { ChevronLeft, ClipboardList, Send } from 'lucide-react';
+import { useNotification } from '../../context/NotificationContext';
 
 interface ReviewStepProps {
   formData: FormData;
@@ -16,6 +17,15 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
   onPrev,
   isSubmitting
 }) => {
+  const { showNotification } = useNotification();
+
+  const handleSubmit = () => {
+    showNotification('Submitting your agreement...', 'info');
+    setTimeout(() => {
+      onNext();
+      showNotification('Agreement submitted successfully!', 'success');
+    }, 1500);
+  };
   return (
     <motion.div
       initial={{ opacity: 0, x: 100 }}
@@ -144,21 +154,25 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
         </div>
 
         <div className="flex justify-between pt-4">
-          <button
+          <motion.button
             type="button"
             onClick={onPrev}
             disabled={isSubmitting}
             className="btn-ghost flex items-center"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <ChevronLeft className="mr-2 h-5 w-5" />
             Back
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
-            onClick={onNext}
+            onClick={handleSubmit}
             disabled={isSubmitting}
             className="btn-primary flex items-center group"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             {isSubmitting ? (
               <>
@@ -174,7 +188,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
                 <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </>
             )}
-          </button>
+          </motion.button>
         </div>
       </div>
     </motion.div>

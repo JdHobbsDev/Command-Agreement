@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Home } from 'lucide-react';
-import confetti from '../../utils/confetti';
+import { CheckCircle, Home, PartyPopper } from 'lucide-react';
+import fireAllConfetti from '../../utils/enhancedConfetti';
 
 interface SuccessStepProps {
   onReset: () => void;
@@ -9,17 +9,22 @@ interface SuccessStepProps {
 
 const SuccessStep: React.FC<SuccessStepProps> = ({ onReset }) => {
 
-  const [, setShowConfetti] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
 
     const timer = setTimeout(() => {
-      setShowConfetti(true);
-      confetti();
-    }, 500);
+      setShowCelebration(true);
+      fireAllConfetti();
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);
+
+
+  const handleCelebrate = () => {
+    fireAllConfetti();
+  };
 
   return (
     <motion.div
@@ -28,10 +33,10 @@ const SuccessStep: React.FC<SuccessStepProps> = ({ onReset }) => {
       transition={{ duration: 0.5 }}
       className="glass-card p-8 max-w-2xl mx-auto text-center"
     >
-      <motion.div 
+      <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: [0, 1.2, 1] }}
-        transition={{ 
+        transition={{
           delay: 0.3,
           duration: 0.8,
           type: "spring",
@@ -44,8 +49,8 @@ const SuccessStep: React.FC<SuccessStepProps> = ({ onReset }) => {
           <CheckCircle className="h-16 w-16 text-success-500" />
         </div>
       </motion.div>
-      
-      <motion.h2 
+
+      <motion.h2
         className="text-3xl font-bold mb-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,7 +58,7 @@ const SuccessStep: React.FC<SuccessStepProps> = ({ onReset }) => {
       >
         Agreement Submitted Successfully!
       </motion.h2>
-      
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -62,7 +67,7 @@ const SuccessStep: React.FC<SuccessStepProps> = ({ onReset }) => {
         <p className="text-slate-300 mb-8">
           Thank you for completing your command agreement. Your submission has been sent to our management team for review. You'll receive further instructions via Discord soon.
         </p>
-        
+
         <div className="bg-primary-900/20 border border-primary-800 rounded-lg p-4 mb-8 text-sm text-primary-300">
           <p className="mb-2 font-medium">What happens next?</p>
           <ul className="list-disc list-inside text-left space-y-1">
@@ -72,14 +77,25 @@ const SuccessStep: React.FC<SuccessStepProps> = ({ onReset }) => {
             <li>A welcome briefing will be scheduled</li>
           </ul>
         </div>
-        
-        <button 
-          onClick={onReset}
-          className="btn-primary flex items-center justify-center mx-auto"
-        >
-          <Home className="mr-2 h-5 w-5" />
-          Return to Home
-        </button>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button
+            onClick={handleCelebrate}
+            className="btn-secondary flex items-center justify-center"
+            aria-label="Celebrate again"
+          >
+            <PartyPopper className="mr-2 h-5 w-5" />
+            Celebrate!
+          </button>
+
+          <button
+            onClick={onReset}
+            className="btn-primary flex items-center justify-center"
+          >
+            <Home className="mr-2 h-5 w-5" />
+            Return to Home
+          </button>
+        </div>
       </motion.div>
     </motion.div>
   );
