@@ -9,7 +9,7 @@ export const sendToDiscord = async (data: FormData): Promise<boolean> => {
 
     const submissionId = await saveSubmission(data);
 
-    const baseUrl = 'https://command-agreement.vercel.app/';
+    const baseUrl = 'https://www.agreement.ukrp.network/';
     const viewUrl = `${baseUrl}/submission/${submissionId}`;
 
 
