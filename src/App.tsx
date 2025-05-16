@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAgreementForm } from './hooks/useAgreementForm';
@@ -10,10 +9,10 @@ import InformationStep from './components/AgreementSteps/InformationStep';
 import ReviewStep from './components/AgreementSteps/ReviewStep';
 import SuccessStep from './components/AgreementSteps/SuccessStep';
 import SubmissionView from './components/SubmissionView';
-
-import { useEffect, useState } from 'react';
-
+import SettingsMenu from './components/SettingsMenu';
 import { NotificationProvider } from './context/NotificationContext';
+import { SettingsProvider } from './context/SettingsContext';
+import { useEffect, useState } from 'react';
 
 const Particle = ({ delay = 0 }: { delay?: number }) => {
   const randomX = Math.random() * 100;
@@ -150,18 +149,19 @@ function AgreementForm() {
 }
 
 function App() {
-
-
   return (
-    <NotificationProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<AgreementForm />} />
-          <Route path="/submission/:id" element={<SubmissionView />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </NotificationProvider>
+    <SettingsProvider>
+      <NotificationProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<AgreementForm />} />
+            <Route path="/submission/:id" element={<SubmissionView />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <SettingsMenu />
+        </BrowserRouter>
+      </NotificationProvider>
+    </SettingsProvider>
   );
 }
 
